@@ -1,22 +1,22 @@
 # Guildboard
 
-Une WebApp légère pour le maîtres de guilde consciencieux de tracker ses aventuriers et leurs quêtes de manière fiable et centralisée. 
+A lightweight WebApp for consciencious Guild Masters who want to track their adventurers and quests in a reliable, centralized way.
 
 ## Features 
 
-## Auteurs
+## Authors
 
-Hugo Belaloui, spé Logiciel, référent back.  
-Nelson Grac-Aubert, ex-spé Jeux Vidéo, référent front.
+Hugo Belaloui, the back-end guy.  
+Nelson Grac-Aubert, the front-end guy.
 
-## Documentation Swagger, apperçu des endpoints
+## Swagger documentation, endpoints preview
 
-## Choix techniques
+## Stack choice
 
-- Java 21 : imposé, mais : LTS, records pour les DTO.
-- SpringBoot : imposé, mais : standard pour le Web avec Java, injection de dépendances, attendus du sujet (Spring Data JPA pour le CRUD et les règles métier, Bean pour les requêtes, Springdoc pour Swagger).
-- PostgreSQL : imposé, mais : déjà utilisé dans des projets précédents, et même si overkill pour la quantité de données pour la demo, on met en place une stack et un environnement scalable et représentatif de la réalité des projets d'entreprise. 
+- Java 21+ is enforced, but : LTS, introduced records for DTOs. 
+- SpringBoot is enforced, but : standard for Web projects with JAVA, dependency injection, built-in toolbox (Spring Data JPA for CRUD and business logic, Bean for API requests, Springdoc for Swagger).
+- PostgreSQL is enforced, but : already used in previous projects, and even if overkill for the current use and demo, gaining competence using a scalable, realistic database management system used on the market. 
 
-## Difficultés rencontrées
+## Dev difficulties
 
-## Bonus (effectués / roadmap des améliorations)
+## Bonus and future roadmap
