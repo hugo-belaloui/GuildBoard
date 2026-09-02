@@ -23,7 +23,7 @@ public class Quest {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private long Id;
+    private long id;
 
     private String title;
     private String description;
