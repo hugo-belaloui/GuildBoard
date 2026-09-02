@@ -39,4 +39,26 @@ public class Assignment {
         this.completedAt = null; 
     }
 
+    // accessors
+    public long getId() {
+        return id;
+    }
+    public Adventurer getAdventurer() {
+        return adventurer;
+    }
+    public Quest getQuest() {
+        return quest;
+    }
+    public LocalDateTime getAssignedAt() {
+        return assignedAt;
+    }
+    public LocalDateTime getCompletedAt() {
+        return completedAt;
+    }
+
+    // turn completion time from null to appropriate timestamp 
+    public void complete(LocalDateTime completedAt) {
+        this.completedAt = completedAt;
+    }
+
 }
