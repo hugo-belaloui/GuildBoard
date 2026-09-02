@@ -19,7 +19,7 @@ public class Adventurer {
 
     @Id // indicates a primary key 
     @GeneratedValue(strategy=GenerationType.AUTO) // auto-increment 
-    private int id; 
+    private long id; 
     private String name;
 
     @Enumerated(EnumType.STRING)
