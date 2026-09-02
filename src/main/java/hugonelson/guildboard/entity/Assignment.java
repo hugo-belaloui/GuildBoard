@@ -11,7 +11,7 @@ public class Assignment {
 
     @Id // indicates a primary key 
     @GeneratedValue(strategy=GenerationType.AUTO) // auto-increment 
-    private int id; 
+    private long id; 
 
     // foreign keys
     private int adventurer;
