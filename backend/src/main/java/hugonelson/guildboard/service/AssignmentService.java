@@ -48,12 +48,12 @@ public class AssignmentService {
             quest = maybeQuest.get();
         } 
         else {
-            throw new ApiException(HttpStatus.NOT_FOUND, "QUEST_NOT_FOUND", "Cannot find the quest.");
+            throw new ApiException(HttpStatus.NOT_FOUND, "QUEST_NOT_FOUND", "Cannot find the quest."); // 404 
         }
 
         // throw ApiException to be caught by the @RestControllerAdvice to enforce RG1 (level requirement)
         if (adventurer.getLevel() < quest.getRequiredLevel()) {
-            throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY, "LEVEL_TOO_LOW", 
+            throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY, "LEVEL_TOO_LOW", // 422 
             adventurer.getName() + " (niveau " + adventurer.getLevel() + ") ne peut pas prendre une quête de niveau " + quest.getRequiredLevel() + ".");
         }
 
