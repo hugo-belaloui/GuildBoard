@@ -60,5 +60,4 @@ public class Assignment {
     public void complete(LocalDateTime completedAt) {
         this.completedAt = completedAt;
     }
-
 }

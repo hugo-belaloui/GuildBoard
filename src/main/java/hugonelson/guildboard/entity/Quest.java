@@ -73,8 +73,4 @@ public class Quest {
     public long getXpReward() {
         return xpReward;
     }
-
-
-
-
 }
