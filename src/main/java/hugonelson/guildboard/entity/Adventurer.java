@@ -18,8 +18,8 @@ public class Adventurer {
     }
 
     @Id // indicates a primary key 
-    @GeneratedValue(strategy=GenerationType.AUTO) // auto-increment 
-    private int id; 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-increment 
+    private long id; 
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -40,4 +40,23 @@ public class Adventurer {
         this.xp = xp; 
     }
 
+    // accessors
+    public long getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public CharacterClass getCharacterClass() {
+        return characterClass;
+    }
+    public long getLevel() {
+        return level;
+    }
+    public long getGold() {
+        return gold;
+    }
+    public long getXp() {
+        return xp;
+    }
 }
