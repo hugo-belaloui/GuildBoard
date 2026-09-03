@@ -19,7 +19,7 @@ public class AdventurerController {
     
     // GET /api/adventurers : fetch all adventurers
     @GetMapping
-    public List<Adventurer> getAllTasks() {
+    public List<Adventurer> getAllAdventurers() {
         return adventurerRepository.findAll();
     }
 
