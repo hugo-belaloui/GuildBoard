@@ -75,4 +75,7 @@ public class Quest {
     public long getXpReward() {
         return xpReward;
     }
+    public QuestStatus getStatus() {
+        return status; 
+    }
 }
