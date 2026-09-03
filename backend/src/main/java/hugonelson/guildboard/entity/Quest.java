@@ -10,13 +10,13 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Quest {
-    private enum Difficulty {
+    public enum Difficulty {
         EASY,
         MEDIUM,
         HARD,
         EPIC
     }
-    private enum QuestStatus {
+    public enum QuestStatus {
         AVAILABLE,
         ON_GOING,
         COMPLETED
