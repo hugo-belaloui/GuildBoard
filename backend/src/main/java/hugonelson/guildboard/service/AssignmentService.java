@@ -57,13 +57,17 @@ public class AssignmentService {
             adventurer.getName() + " (level " + adventurer.getLevel() + ") cannot accept a quest of required level " + quest.getRequiredLevel() + ".");
         }
 
-        // RG2 (quest already taken)
+        // RG2 (quest already ongoing or completed)
         if (quest.getStatus() == Quest.QuestStatus.ON_GOING || quest.getStatus() == Quest.QuestStatus.COMPLETED) {
             throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY, "QUEST_NOT_AVAILABLE", // 422
             "This quest is not available for assignment.");
         }
 
-        // TODO : RG2 (adventurer busy)
+        // RG2 (adventurer already has an ongoing quest and cannot be assigned)
+        if (assignmentRepository.existsByAdventurer_IdAndQuest_Status(adventurerId, Quest.QuestStatus.ON_GOING)) {
+            throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY, "ADVENTURER_ALREADY_BUSY", // 422
+            "This adventurer already has an ongoing quest.");
+        }
 
         return null;
     }
