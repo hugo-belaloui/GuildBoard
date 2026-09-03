@@ -40,4 +40,23 @@ public class Adventurer {
         this.xp = xp; 
     }
 
+    // accessors
+    public long getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public CharacterClass getCharacterClass() {
+        return characterClass;
+    }
+    public long getLevel() {
+        return level;
+    }
+    public long getGold() {
+        return gold;
+    }
+    public long getXp() {
+        return xp;
+    }
 }
