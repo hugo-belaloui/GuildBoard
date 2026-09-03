@@ -23,5 +23,6 @@ DELETE /api/adventurers/{id}  deleteById(id)
 
 I can then add my own : */ 
 List<Adventurer> findByName(String name);
-
+//Bonus assignment query to find top three adventurers
+List<Adventurer> findTop3ByLevelDescXpDesc();
 }
