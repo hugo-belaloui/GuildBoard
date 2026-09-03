@@ -20,3 +20,5 @@ Nelson Grac-Aubert, the front-end guy.
 ## Dev difficulties
 
 ## Bonus and future roadmap
+
+- Vertical scaling if the user count skyrockets / the database becomes heavy : slowly migrate from JPA/Hibernate to JDBC, starting with the heaviest, most used requests. 
