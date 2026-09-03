@@ -11,7 +11,7 @@ import jakarta.persistence.Id;
 @Entity // annotation saying it's a JPA entity 
 public class Adventurer {
     
-    private enum CharacterClass { 
+    public enum CharacterClass { 
         WARRIOR,
         MAGE, 
         CLERIC, 
