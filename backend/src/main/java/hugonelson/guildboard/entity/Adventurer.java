@@ -1,5 +1,6 @@
 package hugonelson.guildboard.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -19,14 +20,16 @@ public class Adventurer {
 
     @Id // indicates a primary key 
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-increment 
-    private long id; 
+    private long id;
+
+    @Column(unique = true) 
     private String name;
 
     @Enumerated(EnumType.STRING)
     private CharacterClass characterClass;
-    private int level; 
-    private int gold;
-    private int xp; 
+    private long level; 
+    private long gold;
+    private long xp; 
 
     // Empty constructor that only exists for the sake of JPA 
     protected Adventurer() {}; 

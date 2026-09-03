@@ -1,5 +1,6 @@
 package hugonelson.guildboard.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -25,15 +26,16 @@ public class Quest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(unique = true)
     private String title;
     private String description;
 
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
-    private int requiredLevel;
-    private int goldReward;
-    private int xpReward;
+    private long requiredLevel;
+    private long goldReward;
+    private long xpReward;
 
     @Enumerated(EnumType.STRING)
     private QuestStatus status;
