@@ -13,7 +13,7 @@ import jakarta.persistence.OneToOne;
 public class Assignment {
 
     @Id // indicates a primary key 
-    @GeneratedValue(strategy=GenerationType.AUTO) // auto-increment 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-increment 
     private long id; 
 
     // foreign keys
