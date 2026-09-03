@@ -39,7 +39,7 @@ public class AssignmentService {
             adventurer = maybeAdventurer.get();
         } 
         else {
-            throw new ApiException(HttpStatus.NOT_FOUND, "ADVENTURER_NOT_FOUND", "Cannot find the adventurer.");
+            throw new ApiException(HttpStatus.NOT_FOUND, "ADVENTURER_NOT_FOUND", "Cannot find the adventurer."); // 404 
         }
 
         Optional<Quest> maybeQuest = questRepository.findById(questId);
@@ -54,10 +54,17 @@ public class AssignmentService {
         // throw ApiException to be caught by the @RestControllerAdvice to enforce RG1 (level requirement)
         if (adventurer.getLevel() < quest.getRequiredLevel()) {
             throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY, "LEVEL_TOO_LOW", // 422 
-            adventurer.getName() + " (niveau " + adventurer.getLevel() + ") ne peut pas prendre une quête de niveau " + quest.getRequiredLevel() + ".");
+            adventurer.getName() + " (level " + adventurer.getLevel() + ") cannot accept a quest of required level " + quest.getRequiredLevel() + ".");
         }
 
-        // TODO : keep implementing business rules, only RG1 for now
+        // RG2 (quest already taken)
+        if (quest.getStatus() == Quest.QuestStatus.ON_GOING || quest.getStatus() == Quest.QuestStatus.COMPLETED) {
+            throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY, "QUEST_NOT_AVAILABLE", // 422
+            "This quest is not available for assignment.");
+        }
+
+        // TODO : RG2 (adventurer busy)
+
         return null;
     }
 }
