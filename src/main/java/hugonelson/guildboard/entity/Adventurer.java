@@ -18,7 +18,7 @@ public class Adventurer {
     }
 
     @Id // indicates a primary key 
-    @GeneratedValue(strategy=GenerationType.AUTO) // auto-increment 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-increment 
     private long id; 
     private String name;
 
