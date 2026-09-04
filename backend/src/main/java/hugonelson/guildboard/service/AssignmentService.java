@@ -1,6 +1,7 @@
 package hugonelson.guildboard.service;
 
 import java.util.Optional;
+import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class AssignmentService {
             adventurer = maybeAdventurer.get();
         } 
         else {
-            throw new ApiException(HttpStatus.NOT_FOUND, "ADVENTURER_NOT_FOUND", "Cannot find the adventurer.");
+            throw new ApiException(HttpStatus.NOT_FOUND, "ADVENTURER_NOT_FOUND", "Cannot find the adventurer."); // 404 
         }
 
         Optional<Quest> maybeQuest = questRepository.findById(questId);
@@ -54,10 +55,80 @@ public class AssignmentService {
         // throw ApiException to be caught by the @RestControllerAdvice to enforce RG1 (level requirement)
         if (adventurer.getLevel() < quest.getRequiredLevel()) {
             throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY, "LEVEL_TOO_LOW", // 422 
-            adventurer.getName() + " (niveau " + adventurer.getLevel() + ") ne peut pas prendre une quête de niveau " + quest.getRequiredLevel() + ".");
+            adventurer.getName() + " (level " + adventurer.getLevel() + ") cannot accept a quest of required level " + quest.getRequiredLevel() + ".");
         }
 
-        // TODO : keep implementing business rules, only RG1 for now
-        return null;
+        // RG2 (quest already ongoing or completed)
+        if (quest.getStatus() == Quest.QuestStatus.ON_GOING || quest.getStatus() == Quest.QuestStatus.COMPLETED) {
+            throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY, "QUEST_NOT_AVAILABLE", // 422
+            "This quest is not available for assignment.");
+        }
+
+        // RG2 (adventurer already has an ongoing quest and cannot be assigned)
+        if (assignmentRepository.existsByAdventurer_IdAndQuest_Status(adventurerId, Quest.QuestStatus.ON_GOING)) {
+            throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY, "ADVENTURER_ALREADY_BUSY", // 422
+            "This adventurer already has an ongoing quest.");
+        }
+
+        // After all checks succeed
+        quest.setStatus(Quest.QuestStatus.ON_GOING);
+        questRepository.save(quest);
+
+        Assignment assignment = new Assignment(adventurer, quest, LocalDateTime.now()); 
+        assignmentRepository.save(assignment);
+
+        return assignment;
+    }
+
+    // complete a quest, reward gold and xp, run the RG3 level loop 
+    public void complete(Long questId, Long adventurerId, Long assignmentId) {
+
+        Optional<Assignment> maybeAssigment = assignmentRepository.findById(assignmentId);
+        Assignment assignment;
+        if (maybeAssignment.isPresent()) {
+            assignment = maybeAssignment.get();
+        } 
+        else {
+            throw new ApiException(HttpStatus.NOT_FOUND, "ASSIGNMENT_NOT_FOUND", "Cannot find the assignment."); // 404 
+        }
+
+        Optional<Adventurer> maybeAdventurer = adventurerRepository.findById(adventurerId);
+        Adventurer adventurer;
+        if (maybeAdventurer.isPresent()) {
+            adventurer = maybeAdventurer.get();
+        } 
+        else {
+            throw new ApiException(HttpStatus.NOT_FOUND, "ADVENTURER_NOT_FOUND", "Cannot find the adventurer."); // 404 
+        }
+
+        Optional<Quest> maybeQuest = questRepository.findById(questId);
+        Quest quest;
+        if (maybeQuest.isPresent()) {
+            quest = maybeQuest.get();
+        } 
+        else {
+            throw new ApiException(HttpStatus.NOT_FOUND, "QUEST_NOT_FOUND", "Cannot find the quest."); // 404 
+        }
+
+        // award Gold and Xp
+        adventurer.setGold(adventurer.getGold() + quest.getGoldReward()); 
+        adventurer.setXp(adventurer.getXp() + quest.getXpReward());
+
+        // mark quest as complete
+        quest.setStatus(Quest.QuestStatus.COMPLETED);
+
+        // level up loop 
+        while (adventurer.getXp() >= adventurer.getLevel() * 100) {
+            adventurer.setXp(adventurer.getXp() - adventurer.getLevel() * 100);
+            adventurer.setLevel(adventurer.getLevel() + 1); 
+        }
+
+        // timestamp assignment.completedAt
+        assignment.complete(LocalDateTime.now()); 
+
+        // make changed persistent
+        assignmentRepository.save(assignment);
+        adventurerRepository.save(adventurer);
+        questRepository.save(quest);
     }
 }

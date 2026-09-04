@@ -75,4 +75,12 @@ public class Quest {
     public long getXpReward() {
         return xpReward;
     }
+    public QuestStatus getStatus() {
+        return status; 
+    }
+
+    // mutators
+    public void setStatus(QuestStatus newStatus) { 
+        this.status = newStatus; 
+    }
 }
