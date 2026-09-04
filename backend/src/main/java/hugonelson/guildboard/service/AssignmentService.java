@@ -81,9 +81,9 @@ public class AssignmentService {
     }
 
     // complete a quest, reward gold and xp, run the RG3 level loop 
-    public void complete(Long questId, Long adventurerId, Long assignmentId) {
-
-        Optional<Assignment> maybeAssigment = assignmentRepository.findById(assignmentId);
+    public void complete(Long questId) {
+        
+        Optional<Assignment> maybeAssignment = assignmentRepository.findByQuest_Id(questId);;
         Assignment assignment;
         if (maybeAssignment.isPresent()) {
             assignment = maybeAssignment.get();
@@ -92,22 +92,11 @@ public class AssignmentService {
             throw new ApiException(HttpStatus.NOT_FOUND, "ASSIGNMENT_NOT_FOUND", "Cannot find the assignment."); // 404 
         }
 
-        Optional<Adventurer> maybeAdventurer = adventurerRepository.findById(adventurerId);
-        Adventurer adventurer;
-        if (maybeAdventurer.isPresent()) {
-            adventurer = maybeAdventurer.get();
-        } 
-        else {
-            throw new ApiException(HttpStatus.NOT_FOUND, "ADVENTURER_NOT_FOUND", "Cannot find the adventurer."); // 404 
-        }
-
-        Optional<Quest> maybeQuest = questRepository.findById(questId);
-        Quest quest;
-        if (maybeQuest.isPresent()) {
-            quest = maybeQuest.get();
-        } 
-        else {
-            throw new ApiException(HttpStatus.NOT_FOUND, "QUEST_NOT_FOUND", "Cannot find the quest."); // 404 
+        Adventurer adventurer = assignment.getAdventurer();
+        Quest quest = assignment.getQuest();
+        
+        if (quest.getStatus() != Quest.QuestStatus.ON_GOING) {
+            throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY, "QUEST_NOT_ON_GOING", "Quest must be ongoing to be completed."); //422
         }
 
         // award Gold and Xp
@@ -126,7 +115,7 @@ public class AssignmentService {
         // timestamp assignment.completedAt
         assignment.complete(LocalDateTime.now()); 
 
-        // make changed persistent
+        // make changes persistent
         assignmentRepository.save(assignment);
         adventurerRepository.save(adventurer);
         questRepository.save(quest);
