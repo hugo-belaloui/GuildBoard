@@ -14,13 +14,19 @@ import hugonelson.guildboard.entity.Adventurer;
 @RequestMapping("/api/adventurers")
 public class AdventurerController {
     
-    @Autowired 
+
     private AdventurerRepository adventurerRepository; 
     
     // GET /api/adventurers : fetch all adventurers
-    @GetMapping
-    public List<Adventurer> getAllAdventurers() {
-        return adventurerRepository.findAll();
+    // @GetMapping
+    // public List<Adventurer> getAllAdventurers() {
+    //     return adventurerRepository.findAll();
+    // }
+
+    // inject using constructor instead of Autowired as asked in PDF
+    public AdventurerController(AdventurerRepository adventurerRepository) 
+    {
+        this.adventurerRepository = adventurerRepository;
     }
 
 }
