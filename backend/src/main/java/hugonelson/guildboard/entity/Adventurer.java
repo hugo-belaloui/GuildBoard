@@ -62,4 +62,15 @@ public class Adventurer {
     public long getXp() {
         return xp;
     }
+
+    // mutators
+    public void setGold(long newGold) { 
+        this.gold = newGold; 
+    }
+    public void setXp(long newXp) { 
+        this.xp = newXp; 
+    }
+    public void setLevel(long newLevel) { 
+        this.level = newLevel; 
+    }
 }
