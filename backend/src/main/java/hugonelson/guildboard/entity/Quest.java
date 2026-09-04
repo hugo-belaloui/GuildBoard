@@ -78,4 +78,9 @@ public class Quest {
     public QuestStatus getStatus() {
         return status; 
     }
+
+    // mutators
+    public void setStatus(QuestStatus newStatus) { 
+        this.status = newStatus; 
+    }
 }
