@@ -128,7 +128,7 @@ public class AssignmentService {
 
         // make changed persistent
         assignmentRepository.save(assignment);
-        assignmentRepository.save(adventurer);
-        assignmentRepository.save(quest);
+        adventurerRepository.save(adventurer);
+        questRepository.save(quest);
     }
 }
