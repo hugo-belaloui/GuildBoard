@@ -93,7 +93,11 @@ public class AssignmentService {
         }
 
         Adventurer adventurer = assignment.getAdventurer();
-        Quest quest = assignment.getQuest(); 
+        Quest quest = assignment.getQuest();
+        
+        if (quest.getStatus() != Quest.QuestStatus.ON_GOING) {
+            throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY, "QUEST_NOT_ON_GOING", "Quest must be ongoing to be completed."); //422
+        }
 
         // award Gold and Xp
         adventurer.setGold(adventurer.getGold() + quest.getGoldReward()); 
