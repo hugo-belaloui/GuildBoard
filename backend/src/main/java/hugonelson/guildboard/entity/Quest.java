@@ -31,14 +31,14 @@ public class Quest {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private Difficulty difficulty;
+    public Difficulty difficulty;
 
     private long requiredLevel;
     private long goldReward;
     private long xpReward;
 
     @Enumerated(EnumType.STRING)
-    private QuestStatus status;
+    public QuestStatus status;
 
     protected Quest() {};
 
