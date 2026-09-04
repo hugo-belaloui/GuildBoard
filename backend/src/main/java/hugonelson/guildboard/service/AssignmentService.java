@@ -1,6 +1,7 @@
 package hugonelson.guildboard.service;
 
 import java.util.Optional;
+import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,13 @@ public class AssignmentService {
             "This adventurer already has an ongoing quest.");
         }
 
-        return null;
+        // After all checks succeed
+        quest.setStatus(Quest.QuestStatus.ON_GOING);
+        questRepository.save(quest);
+
+        Assignment assignment = new Assignment(adventurer, quest, LocalDateTime.now()); 
+        assignmentRepository.save(assignment);
+
+        return assignment;
     }
 }
