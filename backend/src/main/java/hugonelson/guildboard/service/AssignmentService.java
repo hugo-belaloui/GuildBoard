@@ -118,7 +118,7 @@ public class AssignmentService {
         quest.setStatus(Quest.QuestStatus.COMPLETED);
 
         // level up loop 
-        while (adventurer.getXp() > adventurer.getLevel() * 100) {
+        while (adventurer.getXp() >= adventurer.getLevel() * 100) {
             adventurer.setXp(adventurer.getXp() - adventurer.getLevel() * 100);
             adventurer.setLevel(adventurer.getLevel() + 1); 
         }
