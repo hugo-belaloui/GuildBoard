@@ -115,7 +115,7 @@ public class AssignmentService {
         // timestamp assignment.completedAt
         assignment.complete(LocalDateTime.now()); 
 
-        // make changed persistent
+        // make changes persistent
         assignmentRepository.save(assignment);
         adventurerRepository.save(adventurer);
         questRepository.save(quest);
