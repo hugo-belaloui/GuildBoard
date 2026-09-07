@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: guildboard
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa: 
+    hibernate:
+      ddl-auto: update
+
+# flags to seed the db with data.sql script
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
