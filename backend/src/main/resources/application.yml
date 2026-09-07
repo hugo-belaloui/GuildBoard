@@ -16,3 +16,14 @@ spring:
       mode: always
   profiles:
     active: dev
+
+management:
+    endpoints:
+      web:
+        exposure:
+          # counters, latency, all necessary infos to monitor the app 
+          include: health,info,metrics
+    endpoint:
+      health:
+        # todo : change back to "when-authorized" before production
+        show-details: always
