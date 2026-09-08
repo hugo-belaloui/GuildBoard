@@ -1,0 +1,17 @@
+* {
+    --primary-blue: #2563EB;
+    --primary-blue-dark: #1E40AF; 
+    --primary-blue-light: #3B82F6; 
+    --primary-blue-shadow: #DBEAFE; 
+
+    --white: #FFFFFF; 
+    --gray-100: #F3F4F6; 
+    --gray-400: #9CA3AF; 
+    --gray-600: #4B5563; 
+    --gray-900: #111827; 
+
+    --easy-green: #10B981; 
+    --medium-yellow: #F59E0B; 
+    --hard-red: #EF4444; 
+    --epic-purple: #8B5CF6;
+}
