@@ -1,4 +1,6 @@
 :root {
+    
+    /* color palette */
     --primary-blue: #2563EB;
     --primary-blue-dark: #1E40AF; 
     --primary-blue-light: #3B82F6; 
@@ -14,4 +16,28 @@
     --medium-yellow: #F59E0B; 
     --hard-red: #EF4444; 
     --epic-purple: #8B5CF6;
+
+    /* typography */
+    --font-family-base: 'Inter', sans-serif;
+
+    --font-size-h1: 32px;
+    --font-weight-h1: 700;
+
+    --font-size-h2: 24px;
+    --font-weight-h2: 600;
+
+    --font-size-h3: 18px;
+    --font-weight-h3: 600;
+
+    --font-size-body: 16px;
+    --font-weight-body: 400;
+
+    --font-size-body-small: 14px;
+    --font-weight-body-small: 400;
+
+    --font-size-caption: 12px;
+    --font-weight-caption: 500;
+
+    --font-size-button: 14px;
+    --font-weight-button: 600;
 }
