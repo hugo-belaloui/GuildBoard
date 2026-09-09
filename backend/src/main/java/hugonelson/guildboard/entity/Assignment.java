@@ -29,7 +29,7 @@ public class Assignment {
     private LocalDateTime completedAt; 
 
     // Empty constructor that only exists for the sake of JPA 
-    protected Assignment() {}; 
+    public  Assignment() {}; 
 
     // Actual constructor to create persistent objects in database 
     public Assignment(Adventurer adventurer, Quest quest, LocalDateTime assignedAt) {
