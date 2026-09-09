@@ -13,7 +13,7 @@ import hugonelson.guildboard.exceptions.ApiException;
 import hugonelson.guildboard.repository.AdventurerRepository;
 
 import hugonelson.guildboard.entity.Adventurer;
-import hugonelson.guildboard.entity.CharacterClass;
+import hugonelson.guildboard.entity.Adventurer.CharacterClass;
 
 
 @Service
