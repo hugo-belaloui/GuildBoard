@@ -1,6 +1,6 @@
 package hugonelson.guildboard.service;
 
-import java.util.ArrayList; //
+import java.util.ArrayList; //empty arrays
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +25,6 @@ public class AdventurerService {
     }
 
 
-
     //Method to retrieve every adventurer
     public List<AdventurerResponseDTO> getAllAdventurers() //method that return a list of dtos 
     {
@@ -48,9 +47,75 @@ public class AdventurerService {
     }
 
     //method to retrieve an adventurer by id
-    // public AdventurerResponseDTO getAdventurerById (Long id)
-    // {
+    public AdventurerResponseDTO getAdventurerById (Long id)
+    {
+        Optional<Adventurer> maybeAdventurer = adventurerRepository.findById(id); //look through DB for an adventurer by going through the repository, optional as it might be non existant
+        
+        if (maybeAdventurer.isEmpty()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "NOT_FOUND", "Aventurier introuvable"); //exception if not not found
+        }
+        
+        Adventurer adventurer = maybeAdventurer.get(); //we retrieve the adventurer and save it
+        
+        return new AdventurerResponseDTO(
+            adventurer.getId(),
+            adventurer.getName(),
+            adventurer.getCharacterClass().name(),
+            adventurer.getLevel(),
+            adventurer.getXp(),
+            adventurer.getGold()
+        ); // create a DTO
+    }    
 
-    // }    
-    
+    //method to create an adventurer 
+    public AdventurerResponseDTO createAdventurer(AdventurerRequestDTO request) 
+    //request object created containing adventurer's data {name, lvl, etc}
+    {
+        Adventurer adventurer = new Adventurer();
+        
+        adventurer.setName(request.name());
+        adventurer.setCharacterClass(CharacterClass.valueOf(request.characterClass()));
+        
+        if (request.level() != null) {
+            adventurer.setLevel(request.level());
+        } else {
+            adventurer.setLevel(1);
+        } 
+
+        if (request.xp() != null) {
+            adventurer.setXp(request.xp());
+        } else {
+            adventurer.setXp(0);
+        }
+
+        if (request.gold() != null) {
+            adventurer.setGold(request.gold());
+        } else {
+            adventurer.setGold(0);
+        }
+
+        Adventurer savedAdventurer = adventurerRepository.save(adventurer) ; //save our newly created adventurer
+
+        return new AdventurerResponseDTO(
+            savedAdventurer.getId(),
+            savedAdventurer.getName(),
+            savedAdventurer.getCharacterClass().name(),
+            savedAdventurer.getLevel(),
+            savedAdventurer.getXp(),
+            savedAdventurer.getGold()
+        );
+    }
+
+
+    //method to delete the adventurer
+    public void deleteAdventurer(Long id) 
+    {
+        Optional<Adventurer> maybeAdventurer = adventurerRepository.findById(id);
+        
+        if (maybeAdventurer.isEmpty()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "NOT_FOUND", "Aventurier introuvable");
+        }
+        
+        adventurerRepository.deleteById(id);
+    }
 }
