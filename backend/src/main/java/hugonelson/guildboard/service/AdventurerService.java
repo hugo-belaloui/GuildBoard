@@ -31,7 +31,7 @@ public class AdventurerService {
         List<Adventurer> adventurers = adventurerRepository.findAll(); //repo look for every adventurer in postgre
         List<AdventurerResponseDTO> dtos = new ArrayList<>(); // list that contains every dto from above
 
-        for(Adventurer Adventurer : adventurers) //loop for each entity found in the list 
+        for(Adventurer adventurer : adventurers) //loop for each entity found in the list 
         {
             AdventurerResponseDTO dto = new AdventurerResponseDTO // create a new dto (response) filled with the entity's data
             ( adventurer.getId(),
@@ -74,7 +74,7 @@ public class AdventurerService {
         Adventurer adventurer = new Adventurer();
         
         adventurer.setName(request.name());
-        adventurer.setCharacterClass(CharacterClass.valueOf(request.characterClass()));
+        adventurer.setCharacterClass(request.characterClass());
         
         if (request.level() != null) {
             adventurer.setLevel(request.level());
@@ -106,6 +106,42 @@ public class AdventurerService {
         );
     }
 
+    // method to update adventurer (put)
+    public AdventurerResponseDTO updateAdventurer(Long id, AdventurerRequestDTO request) {
+        Optional<Adventurer> maybeAdventurer = adventurerRepository.findById(id);
+        
+        if (maybeAdventurer.isEmpty()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "NOT_FOUND", "Aventurier introuvable");
+        }
+        
+        Adventurer adventurer = maybeAdventurer.get();
+
+        adventurer.setName(request.name());
+        adventurer.setCharacterClass(request.characterClass());
+        
+        if (request.level() != null) {
+            adventurer.setLevel(request.level());
+        }
+
+        if (request.xp() != null) {
+            adventurer.setXp(request.xp());
+        }
+
+        if (request.gold() != null) {
+            adventurer.setGold(request.gold());
+        }
+
+        Adventurer updatedAdventurer = adventurerRepository.save(adventurer);
+
+        return new AdventurerResponseDTO(
+            updatedAdventurer.getId(),
+            updatedAdventurer.getName(),
+            updatedAdventurer.getCharacterClass().name(),
+            updatedAdventurer.getLevel(),
+            updatedAdventurer.getXp(),
+            updatedAdventurer.getGold()
+        );
+    }
 
     //method to delete the adventurer
     public void deleteAdventurer(Long id) 
