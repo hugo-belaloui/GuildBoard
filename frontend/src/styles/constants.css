@@ -1,43 +1,43 @@
-:root {
-    
+@theme {
+
     /* color palette */
-    --primary-blue: #2563EB;
-    --primary-blue-dark: #1E40AF; 
-    --primary-blue-light: #3B82F6; 
-    --primary-blue-shadow: #DBEAFE; 
+    --color-primary-blue: #2563EB;
+    --color-primary-blue-dark: #1E40AF;
+    --color-primary-blue-light: #3B82F6;
+    --color-primary-blue-shadow: #DBEAFE;
 
-    --white: #FFFFFF; 
-    --gray-100: #F3F4F6; 
-    --gray-400: #9CA3AF; 
-    --gray-600: #4B5563; 
-    --gray-900: #111827; 
+    --color-white: #FFFFFF;
+    --color-gray-100: #F3F4F6;
+    --color-gray-400: #9CA3AF;
+    --color-gray-600: #4B5563;
+    --color-gray-900: #111827;
 
-    --easy-green: #10B981; 
-    --medium-yellow: #F59E0B; 
-    --hard-red: #EF4444; 
-    --epic-purple: #8B5CF6;
+    --color-easy-green: #10B981;
+    --color-medium-yellow: #F59E0B;
+    --color-hard-red: #EF4444;
+    --color-epic-purple: #8B5CF6;
 
     /* typography */
-    --font-family-base: 'Inter', sans-serif;
+    --font-base: 'Inter', sans-serif;
 
-    --font-size-h1: 32px;
+    --text-h1: 32px;
     --font-weight-h1: 700;
 
-    --font-size-h2: 24px;
+    --text-h2: 24px;
     --font-weight-h2: 600;
 
-    --font-size-h3: 18px;
+    --text-h3: 18px;
     --font-weight-h3: 600;
 
-    --font-size-body: 16px;
+    --text-body: 16px;
     --font-weight-body: 400;
 
-    --font-size-body-small: 14px;
+    --text-body-small: 14px;
     --font-weight-body-small: 400;
 
-    --font-size-caption: 12px;
+    --text-caption: 12px;
     --font-weight-caption: 500;
 
-    --font-size-button: 14px;
+    --text-button: 14px;
     --font-weight-button: 600;
 }
