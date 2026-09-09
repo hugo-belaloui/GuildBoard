@@ -33,16 +33,16 @@ public class Quest {
     @Enumerated(EnumType.STRING)
     public Difficulty difficulty;
 
-    private long requiredLevel;
-    private long goldReward;
-    private long xpReward;
+    private Integer requiredLevel;
+    private Integer goldReward;
+    private Integer xpReward;
 
     @Enumerated(EnumType.STRING)
     public QuestStatus status;
 
-    protected Quest() {};
+    public Quest() {};
 
-    public Quest(String title, String description, Difficulty difficulty, int requiredLevel, int goldReward, int xpReward, QuestStatus status)
+    public Quest(String title, String description, Difficulty difficulty, Integer requiredLevel, Integer goldReward, Integer xpReward, QuestStatus status)
     {
         this.title = title;
         this.description = description;
@@ -66,13 +66,13 @@ public class Quest {
     public Difficulty getDifficulty() {
         return difficulty;
     }
-    public long getRequiredLevel() {
+    public Integer getRequiredLevel() {
         return requiredLevel;
     }
-    public long getGoldReward() {
+    public Integer getGoldReward() {
         return goldReward;
     }
-    public long getXpReward() {
+    public Integer getXpReward() {
         return xpReward;
     }
     public QuestStatus getStatus() {
@@ -80,6 +80,24 @@ public class Quest {
     }
 
     // mutators
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+    public void setRequiredLevel(Integer requiredLevel) {
+        this.requiredLevel = requiredLevel;
+    }
+    public void setGoldReward(Integer goldReward) {
+        this.goldReward = goldReward;
+    }
+    public void setXpReward(Integer xpReward) {
+        this.xpReward = xpReward;
+    }
     public void setStatus(QuestStatus newStatus) { 
         this.status = newStatus; 
     }

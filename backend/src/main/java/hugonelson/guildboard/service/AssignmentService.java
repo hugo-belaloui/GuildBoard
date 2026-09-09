@@ -2,9 +2,13 @@ package hugonelson.guildboard.service;
 
 import java.util.Optional;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import hugonelson.guildboard.dto.AssignmentResponseDTO;
 
 import hugonelson.guildboard.repository.AdventurerRepository;
 import hugonelson.guildboard.repository.AssignmentRepository;
@@ -119,5 +123,28 @@ public class AssignmentService {
         assignmentRepository.save(assignment);
         adventurerRepository.save(adventurer);
         questRepository.save(quest);
+    }
+
+    //retrieve all assignment for an adventurer 
+    public List<AssignmentResponseDTO> getAdventurerHistory (Long adventurerId) {
+        Optional<Adventurer> maybeAdventurer = adventurerRepository.findById(adventurerId);
+        
+        if (maybeAdventurer.isEmpty()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "ADVENTURER_NOT_FOUND", "Can't find the adventurer");
+        }
+        
+        List<Assignment> assignments = assignmentRepository.findByAdventurerId(adventurerId);
+        List<AssignmentResponseDTO> dtos = new ArrayList<>();
+        
+        for (Assignment assignment : assignments) {
+            dtos.add(new AssignmentResponseDTO(
+                assignment.getId(),
+                assignment.getAdventurer().getId(),
+                assignment.getQuest().getId(),
+                assignment.getAssignedAt(),
+                assignment.getCompletedAt()
+            ));
+        }
+        return dtos;
     }
 }

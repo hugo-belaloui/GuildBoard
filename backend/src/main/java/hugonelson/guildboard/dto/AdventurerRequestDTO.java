@@ -17,7 +17,10 @@ public record AdventurerRequestDTO(
         String name,
 
     @NotNull(message = "Character class required")
-        CharacterClass CharacterClass,
+        CharacterClass characterClass,
+
+    @Min(value = 1, message = "Level can't be less than 1")
+        Integer level,
 
     @Min(value = 0, message = "XP can't be negative")
         Integer xp,

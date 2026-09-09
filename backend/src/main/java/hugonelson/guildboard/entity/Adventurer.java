@@ -27,15 +27,15 @@ public class Adventurer {
 
     @Enumerated(EnumType.STRING)
     private CharacterClass characterClass;
-    private long level; 
-    private long gold;
-    private long xp; 
+    private Integer level; 
+    private Integer gold;
+    private Integer xp; 
 
     // Empty constructor that only exists for the sake of JPA 
-    protected Adventurer() {}; 
+    public Adventurer() {}; 
 
     // Actual constructor to create persistent objects in database 
-    public Adventurer(String name, CharacterClass characterClass, int level, int gold, int xp) {
+    public Adventurer(String name, CharacterClass characterClass, Integer level, Integer gold, Integer xp) {
         this.name = name;
         this.level = level;
         this.characterClass = characterClass; 
@@ -53,24 +53,30 @@ public class Adventurer {
     public CharacterClass getCharacterClass() {
         return characterClass;
     }
-    public long getLevel() {
+    public Integer getLevel() {
         return level;
     }
-    public long getGold() {
+    public Integer getGold() {
         return gold;
     }
-    public long getXp() {
+    public Integer getXp() {
         return xp;
     }
 
     // mutators
-    public void setGold(long newGold) { 
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setCharacterClass(CharacterClass characterClass) {
+        this.characterClass = characterClass;
+    }
+    public void setGold(Integer newGold) { 
         this.gold = newGold; 
     }
-    public void setXp(long newXp) { 
+    public void setXp(Integer newXp) { 
         this.xp = newXp; 
     }
-    public void setLevel(long newLevel) { 
+    public void setLevel(Integer newLevel) { 
         this.level = newLevel; 
     }
 }
