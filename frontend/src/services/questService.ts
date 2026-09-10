@@ -1,8 +1,33 @@
 import { request } from "./httpClient.ts" 
-import type { Quest } from "../types/quest.ts"
+import type { Difficulty, Quest, QuestStatus } from "../types/quest.ts"
 
-export async function getQuests(): Promise<Quest[]> { 
-
-    return request<Quest[]>("/quests"); 
+// GET a list of quests, with optional status and difficulty 
+export async function getQuests(filters?: { status?: QuestStatus; difficulty?: Difficulty })
+: Promise<Quest[]> { 
     
+    // URLSearchParams : a class to build a query string, handling special character encoding
+    const params = new URLSearchParams();
+
+    // if one/two filters are on 
+    if (filters?.status) {
+        params.append("status", filters.status); 
+    }
+    if (filters?.difficulty) {
+        params.append("difficulty", filters.difficulty); 
+    }
+
+    // parse the URLSearchParams into a string 
+    const query = params.toString(); 
+
+    // ternary condition : if the query exists, append its parameters to the URL, else do nothing
+    return request<Quest[]>(`/quests${query ? "?" + query : ""}`);
 }
+
+// GET a quest with its id 
+export async function getQuest(id: number) : Promise<Quest> { 
+
+    return request<Quest>(`/quests/${id}`);
+
+}
+
+
