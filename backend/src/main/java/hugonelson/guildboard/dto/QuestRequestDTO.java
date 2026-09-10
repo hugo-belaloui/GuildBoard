@@ -10,7 +10,7 @@ import hugonelson.guildboard.entity.Quest.Difficulty;
 public record QuestRequestDTO(
 
         @NotBlank(message = "Title Required")
-        @Size(min = 5, max = 30, message = "Title must be between 5 to 30 characters")
+        @Size(min = 5, max = 100, message = "Title must be between 5 to 30 characters")
             String title,
 
         @NotBlank(message = "Description required")
@@ -27,7 +27,7 @@ public record QuestRequestDTO(
         @Min(value = 0, message = "Rewarded gold can't be negative")
             Integer goldReward,
 
-        @Min(value = 0, message = "Rewarded xp can't be negative")
+        @Min(value = 1, message = "Rewarded xp can't be negative")
             Integer xpReward
 ) {
 }

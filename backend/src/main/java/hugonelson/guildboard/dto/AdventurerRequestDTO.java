@@ -13,7 +13,7 @@ import hugonelson.guildboard.entity.Adventurer.CharacterClass;
 public record AdventurerRequestDTO(
     //Bean validaiton annotation
     @NotBlank(message = "Require Name")
-    @Size(min = 3, max = 25, message = "Name must contains between 3 to 25 characters")
+    @Size(min = 2, max = 50, message = "Name must contains between 3 to 25 characters")
         String name,
 
     @NotNull(message = "Character class required")

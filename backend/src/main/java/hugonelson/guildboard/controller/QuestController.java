@@ -13,6 +13,7 @@ import hugonelson.guildboard.entity.Quest; // Imports the Quest entity (specific
 import hugonelson.guildboard.entity.Assignment; // Imports the Assignment entity returned by the assignment route
 import hugonelson.guildboard.service.QuestService; // Imports the service that contains all the business logic for quests
 import hugonelson.guildboard.service.AssignmentService; // Imports the service that contains the assignment business logic
+import hugonelson.guildboard.dto.AssignmentResponseDTO;
 
 @RestController // Tells Spring that this class is a Controller and every method automatically serializes its return value to JSON
 @RequestMapping("/api/quests") // Sets the base URL path for all endpoints in this controller
@@ -80,13 +81,22 @@ public class QuestController { // Defines the main class for handling quest-rela
 
     // Maps HTTP POST requests sent to /api/quests/{id}/assignment
     @PostMapping("/{id}/assignment") 
-    public Assignment assignQuest(
+    public AssignmentResponseDTO assignQuest(
             // Takes the quest ID from the URL path
             @PathVariable Long id, 
             // Validates and extracts the adventurer ID from the JSON body
             @Valid @RequestBody AssignAdventurerRequestDTO request) { 
-        // Calls the AssignmentService to link the adventurer to the quest (applying business rule RG1 & RG2)
-        return assignmentService.assign(id, request.adventurerId()); 
+        // Calls the AssignmentService to link the adventurer to the quest 
+        Assignment assignment = assignmentService.assign(id, request.adventurerId());
+
+        // Transforms the JPA entity into a DTO before returning it to the client 
+        return new AssignmentResponseDTO(
+            assignment.getId(),
+            assignment.getAdventurer().getId(),
+            assignment.getQuest().getId(),
+            assignment.getAssignedAt(),
+            assignment.getCompletedAt()
+        );
     }
 
     // Maps HTTP POST requests sent to /api/quests/{id}/completion
