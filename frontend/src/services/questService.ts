@@ -1,5 +1,5 @@
 import { request } from "./httpClient.ts" 
-import type { Difficulty, Quest, QuestStatus } from "../types/quest.ts"
+import type { Difficulty, Quest, QuestStatus, QuestRequest } from "../types/quest.ts"
 
 // GET a list of quests, with optional status and difficulty 
 export async function getQuests(filters?: { status?: QuestStatus; difficulty?: Difficulty })
@@ -27,6 +27,22 @@ export async function getQuests(filters?: { status?: QuestStatus; difficulty?: D
 export async function getQuest(id: number) : Promise<Quest> { 
 
     return request<Quest>(`/quests/${id}`);
+
+}
+
+// POST a quest 
+export async function createQuest(quest: QuestRequest) : Promise<Quest> { 
+
+    const options: RequestInit = {
+        // GET is default, else needs to be precised 
+        method: "POST",
+        // Tell the server "the content i'm sending is JSON, now you know how to deserialize it"
+        headers: { "Content-Type": "application/json" },
+        // The body of a request is a string, so the JSON needs to be parsed
+        body: JSON.stringify(quest),
+    };
+
+    return request<Quest>("/quests", options);
 
 }
 
