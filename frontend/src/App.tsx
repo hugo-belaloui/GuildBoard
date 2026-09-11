@@ -1,3 +1,10 @@
+import { LoadSpinner } from "./components/ui/LoadSpinner"
+import { ErrorMessage } from "./components/ui/ErrorMessage"
+import { EmptyStateMessage } from "./components/ui/EmptyStateMessage"
+import { Badge } from "./components/ui/Badge"
+import { ProgressBar } from "./components/ui/ProgressBar"
+import { Button } from "./components/ui/Button"
+
 function App() {
 
   return (
@@ -10,6 +17,28 @@ function App() {
           <button className="text-blue-900 font-semibold">Quests</button>
         </div>
       </nav>
+
+      <div className="flex flex-col gap-4 p-4">
+        <LoadSpinner />
+        <ErrorMessage message="404 : Testing an error message component" />
+        <EmptyStateMessage message="No quest found, empty state test" />
+        <div>
+          <Badge label="COMPLETED" color="gray" />
+          <Badge label="EASY" color="green" />
+          <Badge label="MEDIUM" color="yellow" />
+          <Badge label="ON_GOING" color="yellow" />
+          <Badge label="HARD" color="red" />
+          <Badge label="EPIC" color="purple" />
+          <Badge label="AVAILABLE" color="blue" />
+        </div>
+        <ProgressBar value={5} max={100} />
+        <ProgressBar value={500} max={1000} />
+        <ProgressBar value={450} max={600} />
+        <Button onClick={() => alert("BLUE")}>BLUE</Button>
+        <Button onClick={() => alert("BLUE OUTLINE")} variant="blue_outline">BLUE</Button>
+        <Button onClick={() => alert("RED")} variant="red">RED</Button>
+        <Button onClick={() => alert("RED-OUTLINE")} variant="red_outline">RED-OUTLINE</Button>
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
         <section className="bg-blue-100 text-blue-900 p-4 rounded-lg">
