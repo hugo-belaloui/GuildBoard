@@ -46,4 +46,24 @@ export async function createQuest(quest: QuestRequest) : Promise<Quest> {
 
 }
 
+// PUT a quest 
+export async function updateQuest(id: number, quest: QuestRequest) : Promise<Quest> { 
+
+    const options: RequestInit = {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(quest),
+    };
+
+    return request<Quest>(`/quests/${id}`, options);
+
+}
+
+// DELETE a quest
+
+export async function deleteQuest(id: number) : Promise<void> {
+    
+    return request<void>(`/quests/${id}`, { method: "DELETE" });
+
+}
 
