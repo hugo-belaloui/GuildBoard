@@ -28,7 +28,6 @@ export async function getQuests(filters?: { status?: QuestStatus; difficulty?: D
 export async function getQuest(id: number) : Promise<Quest> { 
 
     return request<Quest>(`/quests/${id}`);
-
 }
 
 // POST a quest 
@@ -44,7 +43,6 @@ export async function createQuest(quest: QuestRequest) : Promise<Quest> {
     };
 
     return request<Quest>("/quests", options);
-
 }
 
 // PUT a quest 
@@ -57,7 +55,6 @@ export async function updateQuest(id: number, quest: QuestRequest) : Promise<Que
     };
 
     return request<Quest>(`/quests/${id}`, options);
-
 }
 
 // DELETE a quest
@@ -65,7 +62,6 @@ export async function updateQuest(id: number, quest: QuestRequest) : Promise<Que
 export async function deleteQuest(id: number) : Promise<void> {
     
     return request<void>(`/quests/${id}`, { method: "DELETE" });
-
 }
 
 // POST assign an adventurer
@@ -78,6 +74,11 @@ export async function assignAdventurer(questId: number, adventurerId: number) : 
     };
 
     return request<Assignment>(`/quests/${questId}/assignment`, options);
-
 }
 
+// POST complete a quest 
+
+export async function completeQuest(questId: number) : Promise<void> { 
+
+    return request<void>(`/quests/${questId}/completion`, { method: "POST" });
+}
