@@ -1,3 +1,5 @@
+import { LoadSpinner } from "./components/ui/LoadSpinner"
+
 function App() {
 
   return (
@@ -10,6 +12,8 @@ function App() {
           <button className="text-blue-900 font-semibold">Quests</button>
         </div>
       </nav>
+
+      <LoadSpinner />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
         <section className="bg-blue-100 text-blue-900 p-4 rounded-lg">
