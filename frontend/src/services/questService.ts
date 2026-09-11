@@ -1,5 +1,6 @@
 import { request } from "./httpClient.ts" 
 import type { Difficulty, Quest, QuestStatus, QuestRequest } from "../types/quest.ts"
+import type { Assignment } from "../types/assignment.ts";
 
 // GET a list of quests, with optional status and difficulty 
 export async function getQuests(filters?: { status?: QuestStatus; difficulty?: Difficulty })
@@ -64,6 +65,19 @@ export async function updateQuest(id: number, quest: QuestRequest) : Promise<Que
 export async function deleteQuest(id: number) : Promise<void> {
     
     return request<void>(`/quests/${id}`, { method: "DELETE" });
+
+}
+
+// POST assign an adventurer
+export async function assignAdventurer(questId: number, adventurerId: number) : Promise<Assignment> {
+
+    const options: RequestInit = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({adventurerId: adventurerId}),
+    };
+
+    return request<Assignment>(`/quests/${questId}/assignment`, options);
 
 }
 
