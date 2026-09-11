@@ -1,6 +1,7 @@
 import { LoadSpinner } from "./components/ui/LoadSpinner"
 import { ErrorMessage } from "./components/ui/ErrorMessage"
 import { EmptyStateMessage } from "./components/ui/EmptyStateMessage"
+import { Badge } from "./components/ui/Badge"
 
 function App() {
 
@@ -18,6 +19,14 @@ function App() {
       <LoadSpinner />
       <ErrorMessage message="404 : Testing an error message component" />
       <EmptyStateMessage message="No quest found, empty state test" />
+      <Badge label="COMPLETED" color="gray" />
+      <Badge label="EASY" color="green" />
+      <Badge label="MEDIUM" color="yellow" />
+      <Badge label="ON_GOING" color="yellow" />
+      <Badge label="HARD" color="red" />
+      <Badge label="EPIC" color="purple" />
+      <Badge label="AVAILABLE" color="blue" />
+
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
         <section className="bg-blue-100 text-blue-900 p-4 rounded-lg">
