@@ -101,6 +101,7 @@ public class QuestController { // Defines the main class for handling quest-rela
 
     // Maps HTTP POST requests sent to /api/quests/{id}/completion
     @PostMapping("/{id}/completion") 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     // Extracts the quest ID from the URL to know which quest has been completed
     public void completeQuest(@PathVariable Long id) { 
         // Calls the AssignmentService to finalize the quest, distribute rewards and compute level ups (RG3)
