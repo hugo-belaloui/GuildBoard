@@ -2,6 +2,8 @@ import { LoadSpinner } from "./components/ui/LoadSpinner"
 import { ErrorMessage } from "./components/ui/ErrorMessage"
 import { EmptyStateMessage } from "./components/ui/EmptyStateMessage"
 import { Badge } from "./components/ui/Badge"
+import { ProgressBar } from "./components/ui/ProgressBar"
+
 
 function App() {
 
@@ -26,6 +28,9 @@ function App() {
       <Badge label="HARD" color="red" />
       <Badge label="EPIC" color="purple" />
       <Badge label="AVAILABLE" color="blue" />
+      <ProgressBar value={5} max={100} />
+      <ProgressBar value={500} max={1000} />
+      <ProgressBar value={450} max={600} />
 
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
