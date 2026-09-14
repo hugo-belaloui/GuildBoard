@@ -7,10 +7,14 @@ import { AllAdventurersPage } from "./pages/AllAdventurersPage";
 import { AdventurerDetailsPage } from "./pages/AdventurerDetailsPage";
 import { AdventurerFormPage } from "./pages/AdventurerFormPage";
 
+import { NavBar } from "./components/layout/Navbar";
+
 function App() {
     return (
-        // Routes reads the current URL and renders the ONE Route below that matches it,
-        // like a switch statement over the browser's address bar
+      <>
+        <NavBar/>
+        {/* Routes reads the current URL and renders the ONE Route below that matches it,
+        like a switch statement over the browser's address bar */}
         <Routes>
             {/* element expects an already-instantiated component (< Function />), not a reference to it (Function) */}
             <Route path="/" element={<HomePage />} />
@@ -23,6 +27,7 @@ function App() {
             <Route path="/adventurers/:id" element={<AdventurerDetailsPage />} />
             <Route path="/adventurers/:id/edit" element={<AdventurerFormPage />} />
         </Routes>
+      </>
     );
 }
 
