@@ -1,60 +1,29 @@
-import { LoadSpinner } from "./components/ui/LoadSpinner"
-import { ErrorMessage } from "./components/ui/ErrorMessage"
-import { EmptyStateMessage } from "./components/ui/EmptyStateMessage"
-import { Badge } from "./components/ui/Badge"
-import { ProgressBar } from "./components/ui/ProgressBar"
-import { Button } from "./components/ui/Button"
+import { Routes, Route } from "react-router-dom";
+import { HomePage } from "./pages/HomePage";
+import { AllQuestsPage } from "./pages/AllQuestsPage";
+import { QuestDetailsPage } from "./pages/QuestDetailsPage";
+import { QuestFormPage } from "./pages/QuestFormPage";
+import { AllAdventurersPage } from "./pages/AllAdventurersPage";
+import { AdventurerDetailsPage } from "./pages/AdventurerDetailsPage";
+import { AdventurerFormPage } from "./pages/AdventurerFormPage";
 
 function App() {
-
-  return (
-    <div>
-      <nav className="flex items-center justify-between bg-blue-100 text-white p-4">
-        <h1 className="text-blue-900 font-bold">Guildboard</h1>
-        <div className="flex gap-2">
-          <button className="text-blue-900 font-semibold">Home</button>
-          <button className="text-blue-900 font-semibold">Adventurers</button>
-          <button className="text-blue-900 font-semibold">Quests</button>
-        </div>
-      </nav>
-
-      <div className="flex flex-col gap-4 p-4">
-        <LoadSpinner />
-        <ErrorMessage message="404 : Testing an error message component" />
-        <EmptyStateMessage message="No quest found, empty state test" />
-        <div>
-          <Badge label="COMPLETED" color="gray" />
-          <Badge label="EASY" color="green" />
-          <Badge label="MEDIUM" color="yellow" />
-          <Badge label="ON_GOING" color="yellow" />
-          <Badge label="HARD" color="red" />
-          <Badge label="EPIC" color="purple" />
-          <Badge label="AVAILABLE" color="blue" />
-        </div>
-        <ProgressBar value={5} max={100} />
-        <ProgressBar value={500} max={1000} />
-        <ProgressBar value={450} max={600} />
-        <Button onClick={() => alert("BLUE")}>BLUE</Button>
-        <Button onClick={() => alert("BLUE OUTLINE")} variant="blue_outline">BLUE</Button>
-        <Button onClick={() => alert("RED")} variant="red">RED</Button>
-        <Button onClick={() => alert("RED-OUTLINE")} variant="red_outline">RED-OUTLINE</Button>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4">
-        <section className="bg-blue-100 text-blue-900 p-4 rounded-lg">
-          <h2 className="font-semibold">Quests</h2>
-          <button className="font-bold">BROWSE ALL ADVENTURERS</button>
-          <button className="font-bold">CREATE NEW ADVENTURER</button>
-        </section>
-        <section className="bg-blue-100 text-blue-900 font-semibold p-4 rounded-lg">
-          <h2 className="font-semibold">Adventurers</h2>
-          <button className="font-bold">BROWSE ALL ADVENTURERS</button>
-          <button className="font-bold">CREATE NEW ADVENTURER</button>
-        </section>
-      </div>
-  </div>
-  )
-
+    return (
+        // Routes reads the current URL and renders the ONE Route below that matches it,
+        // like a switch statement over the browser's address bar
+        <Routes>
+            {/* element expects an already-instantiated component (< Function />), not a reference to it (Function) */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/quests" element={<AllQuestsPage />} />
+            <Route path="/quests/new" element={<QuestFormPage />} />
+            <Route path="/quests/:id" element={<QuestDetailsPage />} />
+            <Route path="/quests/:id/edit" element={<QuestFormPage />} />
+            <Route path="/adventurers" element={<AllAdventurersPage />} />
+            <Route path="/adventurers/new" element={<AdventurerFormPage />} />
+            <Route path="/adventurers/:id" element={<AdventurerDetailsPage />} />
+            <Route path="/adventurers/:id/edit" element={<AdventurerFormPage />} />
+        </Routes>
+    );
 }
 
-export default App
+export default App;
