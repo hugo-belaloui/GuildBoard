@@ -22,3 +22,4 @@ export function useQuest(id : number) {
 
     return { quest, isLoading, error };
 }
+
