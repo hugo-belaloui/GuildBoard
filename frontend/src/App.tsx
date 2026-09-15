@@ -8,6 +8,7 @@ import { AdventurerDetailsPage } from "./pages/AdventurerDetailsPage";
 import { AdventurerFormPage } from "./pages/AdventurerFormPage";
 
 import { NavBar } from "./components/layout/Navbar";
+import { PageContainer } from "./components/layout/PageContainer";
 
 function App() {
     return (
@@ -15,18 +16,20 @@ function App() {
         <NavBar/>
         {/* Routes reads the current URL and renders the ONE Route below that matches it,
         like a switch statement over the browser's address bar */}
-        <Routes>
-            {/* element expects an already-instantiated component (< Function />), not a reference to it (Function) */}
-            <Route path="/" element={<HomePage />} />
-            <Route path="/quests" element={<AllQuestsPage />} />
-            <Route path="/quests/new" element={<QuestFormPage />} />
-            <Route path="/quests/:id" element={<QuestDetailsPage />} />
-            <Route path="/quests/:id/edit" element={<QuestFormPage />} />
-            <Route path="/adventurers" element={<AllAdventurersPage />} />
-            <Route path="/adventurers/new" element={<AdventurerFormPage />} />
-            <Route path="/adventurers/:id" element={<AdventurerDetailsPage />} />
-            <Route path="/adventurers/:id/edit" element={<AdventurerFormPage />} />
-        </Routes>
+        <PageContainer>
+          <Routes>
+              {/* element expects an already-instantiated component (< Function />), not a reference to it (Function) */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/quests" element={<AllQuestsPage />} />
+              <Route path="/quests/new" element={<QuestFormPage />} />
+              <Route path="/quests/:id" element={<QuestDetailsPage />} />
+              <Route path="/quests/:id/edit" element={<QuestFormPage />} />
+              <Route path="/adventurers" element={<AllAdventurersPage />} />
+              <Route path="/adventurers/new" element={<AdventurerFormPage />} />
+              <Route path="/adventurers/:id" element={<AdventurerDetailsPage />} />
+              <Route path="/adventurers/:id/edit" element={<AdventurerFormPage />} />
+          </Routes>
+        </PageContainer>
       </>
     );
 }
