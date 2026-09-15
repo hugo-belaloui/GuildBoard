@@ -9,7 +9,7 @@ interface QuestFiltersProps {
 
 export function QuestFilters({ status, difficulty, onStatusChange, onDifficultyChange }: QuestFiltersProps) {
     return (
-        <div className="flex gap-4 mb-4">
+        <div className="flex gap-4">
             <select
                 // ?? : use status, but fall back to "" if it's undefined.
                 value={status ?? ""}

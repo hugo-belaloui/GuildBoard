@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
 import type { Quest } from "../../types/quest";
 import { DifficultyBadge } from "./DifficultyBadge";
 import { StatusBadge } from "./StatusBadge";
+import { Button } from "../ui/Button";
 
 interface QuestTableProps {
     quests: Quest[];
@@ -27,14 +27,8 @@ export function QuestTable({ quests }: QuestTableProps) {
                         <span className="text-amber-600">{quest.goldReward} Gold</span>
                         <span className="text-blue-600">{quest.xpReward} XP</span>
                     </div>
-                    {/* Link renders a real <a>, inline by default : "block" + "w-full" make it
-                        look and behave like our full-width Button component */}
-                    <Link
-                        to={`/quests/${quest.id}`}
-                        className="block w-full text-center rounded-lg px-6 py-3 font-bold uppercase tracking-wide text-sm bg-blue-600 text-white hover:bg-blue-800"
-                    >
-                        View Details
-                    </Link>
+                    {/* Button with "to" renders a real <Link>/<a>, not a <button onClick></button>*/}
+                    <Button to={`/quests/${quest.id}`}>View Details</Button>
                 </article>
             ))}
         </div>
