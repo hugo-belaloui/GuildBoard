@@ -3,7 +3,7 @@ import { Badge } from "../ui/Badge";
 
 const STATUS_STYLES: Record<QuestStatus, { label: string; color: "blue" | "yellow" | "gray" }> = {
     AVAILABLE: { label: "AVAILABLE", color: "blue" },
-    ON_GOING: { label: "ONGOIN", color: "yellow" },
+    ON_GOING: { label: "ONGOING", color: "yellow" },
     COMPLETED: { label: "COMPLETED", color: "gray" }
 };
 
