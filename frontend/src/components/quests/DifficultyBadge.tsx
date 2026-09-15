@@ -4,10 +4,10 @@ import type { Difficulty } from "../../types/quest";
 import { Badge } from "../ui/Badge";
 
 const DIFFICULTY_STYLES: Record<Difficulty, { label: string; color: "green" | "yellow" | "red" | "purple" }> = {
-    EASY: { label: "Easy", color: "green" },
-    MEDIUM: { label: "Medium", color: "yellow" },
-    HARD: { label: "Hard", color: "red" },
-    EPIC: { label: "Epic", color: "purple" },
+    EASY: { label: "EASY", color: "green" },
+    MEDIUM: { label: "MEDIUM", color: "yellow" },
+    HARD: { label: "HARD", color: "red" },
+    EPIC: { label: "EPIC", color: "purple" },
 };
 
 interface DifficultyBadgeProps {

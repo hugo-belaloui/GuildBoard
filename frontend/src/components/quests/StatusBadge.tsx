@@ -2,9 +2,9 @@ import type { QuestStatus } from "../../types/quest";
 import { Badge } from "../ui/Badge";
 
 const STATUS_STYLES: Record<QuestStatus, { label: string; color: "blue" | "yellow" | "gray" }> = {
-    AVAILABLE: { label: "Available", color: "blue" },
-    ON_GOING: { label: "Ongoing", color: "yellow" },
-    COMPLETED: { label: "Completed", color: "gray" }
+    AVAILABLE: { label: "AVAILABLE", color: "blue" },
+    ON_GOING: { label: "ONGOIN", color: "yellow" },
+    COMPLETED: { label: "COMPLETED", color: "gray" }
 };
 
 interface QuestStatusBadgeProps {
