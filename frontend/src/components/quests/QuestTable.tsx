@@ -19,6 +19,7 @@ export function QuestTable({ quests }: QuestTableProps) {
                         <DifficultyBadge difficulty={quest.difficulty} />
                         <StatusBadge status={quest.status} />
                     </div>
+                    <p className="text-sm font-semibold text-gray-900 mb-1">Requires Level {quest.requiredLevel}+</p>
                     <h3 className="font-semibold text-gray-900 mb-1">{quest.title}</h3>
                     {/* truncate : Tailwind shorthand for overflow-hidden + ellipsis + no wrap,
                         keeps every card the same height even with a long description */}

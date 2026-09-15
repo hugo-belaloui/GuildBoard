@@ -44,6 +44,7 @@ export function QuestDetailsPage() {
                 <StatusBadge status={quest.status} />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">{quest.title}</h1>
+            <p className="text-sm font-semibold text-gray-900 mb-2">Requires Level {quest.requiredLevel}+</p>
             <p className="text-base text-gray-900 mb-4">{quest.description}</p>
             <div className="flex gap-4 text-sm font-semibold mb-6">
                 <span className="text-amber-600">{quest.goldReward} Gold</span>
