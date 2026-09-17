@@ -1,8 +1,16 @@
 -- This file will always seed the database on app launch
 
 INSERT INTO adventurer (name, character_class, level, gold, xp) VALUES
-('Aragorn', 'RANGER', 1, 0, 0),
-('Gandalf', 'MAGE', 1, 0, 0)
+('Magni Bronzebeard', 'WARRIOR', 2, 80, 0),
+('Anduin Wrynn', 'CLERIC', 5, 200, 0),
+('Uther Lightbringer', 'CLERIC', 9, 650, 0),
+('Jaina Proudmoore', 'MAGE', 12, 1200, 0),
+('Sylvanas Windrunner', 'RANGER', 18, 3400, 0),
+('Varian Wrynn', 'WARRIOR', 25, 4500, 0),
+('Rexxar', 'RANGER', 30, 5200, 0),
+('Medivh', 'MAGE', 40, 8000, 0),
+('Tirion Fordring', 'CLERIC', 45, 9500, 0),
+('Thrall', 'WARRIOR', 50, 12000, 0)
 ON CONFLICT (name) DO NOTHING;
 
 INSERT INTO quest (title, description, difficulty, required_level, gold_reward, xp_reward, status) VALUES
