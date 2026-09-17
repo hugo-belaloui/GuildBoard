@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react"; 
-import type { Quest } from "../types/quest";
+import { useState, useEffect } from "react";
+import type { Quest, QuestStatus, Difficulty } from "../types/quest";
 import type { ApiError } from "../types/api";
 import { getQuests } from "../services/questService";
 
@@ -9,7 +9,7 @@ import { getQuests } from "../services/questService";
 // comes in *** useState *** : a variable that persists between renders, AND renders a new
 // display when it's modified 
 
-export function useQuests() { 
+export function useQuests(filters?: { status?: QuestStatus; difficulty?: Difficulty }) {
     // create a state variable of type Quest[], initialized empty
     // always returns a pair : the current value, and a setter to modify it  
     const [quests, setQuests] = useState<Quest[]>([]);
@@ -23,14 +23,14 @@ export function useQuests() {
     useEffect(() => {
         // before the call, set as loading 
         setIsLoading(true);
-        getQuests()
-            // when the promise succeeds, update the quests with the result 
+        getQuests(filters)
+            // when the promise succeeds, update the quests with the result
             .then(setQuests)
-            // if getQuests() throw, catch it 
+            // if getQuests() throw, catch it
             .catch(setError)
-            // wheter it succeeds or fails, exit the loading state 
+            // wheter it succeeds or fails, exit the loading state
             .finally(() => setIsLoading(false));
-    }, []);
+    }, [filters?.status, filters?.difficulty]);
 
     // NOTE on parameters
     // .then(callback) resolves callback(promise result) if success
