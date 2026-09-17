@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuest } from "../hooks/useQuest";
-import { deleteQuest } from "../services/questService";
+import { completeQuest, deleteQuest } from "../services/questService";
 import { DifficultyBadge } from "../components/quests/DifficultyBadge";
 import { StatusBadge } from "../components/quests/StatusBadge";
 import { Button } from "../components/ui/Button";
@@ -14,9 +14,9 @@ export function QuestDetailsPage() {
     const { id } = useParams();
     // useNavigate : navigate from id, not from a clicked Link
     const navigate = useNavigate();
-    const { quest, isLoading, error } = useQuest(Number(id));
-    // no dedicated hook needed : just local state for its own error
-    const [deleteError, setDeleteError] = useState<ApiError | null>(null);
+    const { quest, isLoading, error, refetch } = useQuest(Number(id));
+    // shared by both delete and complete : only one action happens at a time
+    const [actionError, setActionError] = useState<ApiError | null>(null);
 
     async function handleDelete() {
         if (!quest) return;
@@ -25,7 +25,17 @@ export function QuestDetailsPage() {
             // redirect back to the list once deleted
             navigate("/quests");
         } catch (err) {
-            setDeleteError(err as ApiError);
+            setActionError(err as ApiError);
+        }
+    }
+
+    async function handleComplete() {
+        if (!quest) return;
+        try {
+            await completeQuest(quest.id);
+            refetch();
+        } catch (err) {
+            setActionError(err as ApiError);
         }
     }
 
@@ -51,9 +61,19 @@ export function QuestDetailsPage() {
                 <span className="text-blue-600">{quest.xpReward} XP</span>
             </div>
 
-            {deleteError && <ErrorMessage message={deleteError.message} />}
+            {actionError && <ErrorMessage message={actionError.message} />}
 
             <div className="flex flex-col gap-3 max-w-sm">
+                {quest.status === "AVAILABLE" && (
+                    <Button to={`/quests/${quest.id}/assign`} variant="blue">
+                        Assign Adventurer
+                    </Button>
+                )}
+                {quest.status === "ON_GOING" && (
+                    <Button onClick={handleComplete} variant="blue">
+                        Complete Quest
+                    </Button>
+                )}
                 {/* a Link has no native disabled state, so we fake it : dim it and block clicks */}
                 <Button
                     to={`/quests/${quest.id}/edit`}
