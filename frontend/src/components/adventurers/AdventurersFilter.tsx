@@ -1,11 +1,11 @@
 import type { CharacterClass } from "../../types/adventurer";
 
-interface QuestFiltersProps {
+interface AdventurersFilterProps {
     characterClass?: CharacterClass;
     onCharacterClassChange: (characterClass : CharacterClass | undefined) => void;
 }
 
-export function AdventurerFilter({ characterClass, onCharacterClassChange }: QuestFiltersProps) {
+export function AdventurerFilter({ characterClass, onCharacterClassChange }: AdventurersFilterProps) {
     return (
 
         <select
