@@ -9,6 +9,7 @@ import { AdventurerFormPage } from "./pages/AdventurerFormPage";
 
 import { NavBar } from "./components/layout/Navbar";
 import { PageContainer } from "./components/layout/PageContainer";
+import { AssignAdventurer } from "./components/quests/AssignAdventurer";
 
 function App() {
     return (
@@ -28,6 +29,7 @@ function App() {
               <Route path="/adventurers/new" element={<AdventurerFormPage />} />
               <Route path="/adventurers/:id" element={<AdventurerDetailsPage />} />
               <Route path="/adventurers/:id/edit" element={<AdventurerFormPage />} />
+              <Route path="/quests/:id/assign" element={<AssignAdventurer />} />
           </Routes>
         </PageContainer>
       </>
