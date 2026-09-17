@@ -4,7 +4,7 @@ import type { ApiError } from "../types/api";
 import { getAdventurer } from "../services/adventurerService";
 
 // Here to grab a single adventurer we need an id
-export function useAdventurer(id : number) { 
+export function useAdventurer(id : number | undefined) { 
 
     // So instead of an empty array, we start with null 
     const [adventurer, setAdventurer] = useState<Adventurer | null>(null);
@@ -12,6 +12,11 @@ export function useAdventurer(id : number) {
     const [error, setError] = useState<ApiError | null>(null);
 
     useEffect(() => {
+        if (id === undefined) {
+            setIsLoading(false);
+            return;
+        }
+        
         setIsLoading(true);
         getAdventurer(id)
             .then(setAdventurer)
