@@ -4,7 +4,7 @@ import type { ApiError } from "../types/api";
 import { getQuest } from "../services/questService";
 
 // Here to grab a single quest we need an id
-export function useQuest(id : number) { 
+export function useQuest(id : number | undefined) { 
 
     // So instead of an empty array, we start with null 
     const [quest, setQuest] = useState<Quest | null>(null);
@@ -12,6 +12,10 @@ export function useQuest(id : number) {
     const [error, setError] = useState<ApiError | null>(null);
 
     useEffect(() => {
+        if (id === undefined) {
+            setIsLoading(false);
+            return;
+        }
         setIsLoading(true);
         getQuest(id)
             .then(setQuest)
