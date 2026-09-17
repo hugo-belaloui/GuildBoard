@@ -1,16 +1,32 @@
-import { Link, useParams } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAdventurer } from "../hooks/useAdventurer";
 import { useAdventurerHistory } from "../hooks/useAdventurerHistory";
+import { deleteAdventurer } from "../services/adventurerService";
+import { Button } from "../components/ui/Button";
 import { ProgressBar } from "../components/ui/ProgressBar";
 import { LoadSpinner } from "../components/ui/LoadSpinner";
 import { ErrorMessage } from "../components/ui/ErrorMessage";
 import { EmptyStateMessage } from "../components/ui/EmptyStateMessage";
+import type { ApiError } from "../types/api";
 
 export function AdventurerDetailsPage() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const { adventurer, isLoading, error } = useAdventurer(Number(id));
     // renamed on destructure : two hooks both return "isLoading"/"error", need distinct names to use both
     const { history, isLoading: isLoadingHistory, error: historyError } = useAdventurerHistory(Number(id));
+    const [actionError, setActionError] = useState<ApiError | null>(null);
+
+    async function handleDelete() {
+        if (!adventurer) return;
+        try {
+            await deleteAdventurer(adventurer.id);
+            navigate("/adventurers");
+        } catch (err) {
+            setActionError(err as ApiError);
+        }
+    }
 
     if (isLoading) return <LoadSpinner />;
     if (error) return <ErrorMessage message={error.message} />;
@@ -52,6 +68,17 @@ export function AdventurerDetailsPage() {
                     ))}
                 </div>
             )}
+
+            {actionError && <ErrorMessage message={actionError.message} />}
+
+            <div className="flex flex-col gap-3 max-w-sm mt-6">
+                <Button to={`/adventurers/${adventurer.id}/edit`} variant="blue_outline">
+                    Edit Adventurer
+                </Button>
+                <Button onClick={handleDelete} variant="red_outline">
+                    Delete Adventurer
+                </Button>
+            </div>
         </div>
     );
 }
