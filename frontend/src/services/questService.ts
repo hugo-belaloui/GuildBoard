@@ -1,7 +1,6 @@
-import { request } from "./httpClient.ts" 
+import { request } from "./httpClient.ts"
 import type { Difficulty, Quest, QuestStatus, QuestRequest } from "../types/quest.ts"
 import type { Assignment } from "../types/assignment.ts";
-import { useToast } from "../components/ui/ToastProvider.tsx";
 
 // GET a list of quests, with optional status and difficulty 
 export async function getQuests(filters?: { status?: QuestStatus; difficulty?: Difficulty })
@@ -79,9 +78,15 @@ export async function assignAdventurer(questId: number, adventurerId: number) : 
     return request<Assignment>(`/quests/${questId}/assignment`, options);
 }
 
-// POST complete a quest 
+// POST complete a quest
 
-export async function completeQuest(questId: number) : Promise<void> { 
+export async function completeQuest(questId: number) : Promise<void> {
 
     return request<void>(`/quests/${questId}/completion`, { method: "POST" });
+}
+
+// GET the current/latest assignment of a quest (only meaningful once ON_GOING or COMPLETED)
+export async function getQuestAssignment(questId: number) : Promise<Assignment> {
+
+    return request<Assignment>(`/quests/${questId}/assignment`);
 }

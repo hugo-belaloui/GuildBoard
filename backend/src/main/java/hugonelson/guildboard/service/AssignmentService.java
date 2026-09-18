@@ -125,7 +125,23 @@ public class AssignmentService {
         questRepository.save(quest);
     }
 
-    //retrieve all assignment for an adventurer 
+    // retrieve the current/latest assignment of a quest (used to show who it's assigned to, and when)
+    public AssignmentResponseDTO getByQuestId(Long questId) {
+        Optional<Assignment> maybeAssignment = assignmentRepository.findByQuest_Id(questId);
+        if (maybeAssignment.isEmpty()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "ASSIGNMENT_NOT_FOUND", "This quest has no assignment.");
+        }
+        Assignment assignment = maybeAssignment.get();
+        return new AssignmentResponseDTO(
+            assignment.getId(),
+            assignment.getAdventurer().getId(),
+            assignment.getQuest().getId(),
+            assignment.getAssignedAt(),
+            assignment.getCompletedAt()
+        );
+    }
+
+    //retrieve all assignment for an adventurer
     public List<AssignmentResponseDTO> getAdventurerHistory (Long adventurerId) {
         Optional<Adventurer> maybeAdventurer = adventurerRepository.findById(adventurerId);
         

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuest } from "../hooks/useQuest";
+import { useQuestAssignment } from "../hooks/useQuestAssignment";
+import { useAdventurers } from "../hooks/useAdventurers";
 import { completeQuest, deleteQuest } from "../services/questService";
 import { DifficultyBadge } from "../components/quests/DifficultyBadge";
 import { StatusBadge } from "../components/quests/StatusBadge";
@@ -17,6 +19,10 @@ export function QuestDetailsPage() {
     const navigate = useNavigate();
     const { showToast } = useToast();
     const { quest, isLoading, error, refetch } = useQuest(Number(id));
+    // only fetch the assignment once the quest is actually assigned (skip on AVAILABLE)
+    const { assignment } = useQuestAssignment(quest && quest.status !== "AVAILABLE" ? quest.id : undefined);
+    // reused to resolve the assigned adventurer's name from their id
+    const { adventurers } = useAdventurers();
     // shared by both delete and complete : only one action happens at a time
     const [actionError, setActionError] = useState<ApiError | null>(null);
 
@@ -50,6 +56,10 @@ export function QuestDetailsPage() {
     // RG2 : edit only allowed if AVAILABLE, delete forbidden only if ON_GOING
     const canEdit = quest.status === "AVAILABLE";
     const canDelete = quest.status !== "ON_GOING";
+
+    // the assignment only gives an adventurerId : look up the matching adventurer for their name
+    const assignedAdventurer = adventurers.find((adventurer) => adventurer.id === assignment?.adventurerId);
+    const assignedAdventurerName = assignedAdventurer?.name ?? `Adventurer #${assignment?.adventurerId}`;
 
     return (
         <div>
@@ -94,6 +104,20 @@ export function QuestDetailsPage() {
                     Delete Quest
                 </Button>
             </div>
+
+            {/* only shown once the quest has actually been assigned at least once */}
+            {assignment && (
+                <div className="mt-4">
+                    <p className="text-sm text-gray-500">
+                        Assigned {new Date(assignment.assignedAt).toLocaleDateString()} to {assignedAdventurerName}
+                    </p>
+                    {assignment.completedAt && (
+                        <p className="text-sm text-gray-500">
+                            Completed {new Date(assignment.completedAt).toLocaleDateString()} by {assignedAdventurerName}
+                        </p>
+                    )}
+                </div>
+            )}
         </div>
     );
 }
