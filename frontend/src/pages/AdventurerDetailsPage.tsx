@@ -8,11 +8,13 @@ import { ProgressBar } from "../components/ui/ProgressBar";
 import { LoadSpinner } from "../components/ui/LoadSpinner";
 import { ErrorMessage } from "../components/ui/ErrorMessage";
 import { EmptyStateMessage } from "../components/ui/EmptyStateMessage";
+import { useToast } from "../components/ui/ToastProvider";
 import type { ApiError } from "../types/api";
 
 export function AdventurerDetailsPage() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { showToast } = useToast();
     const { adventurer, isLoading, error } = useAdventurer(Number(id));
     // renamed on destructure : two hooks both return "isLoading"/"error", need distinct names to use both
     const { history, isLoading: isLoadingHistory, error: historyError } = useAdventurerHistory(Number(id));
@@ -22,6 +24,7 @@ export function AdventurerDetailsPage() {
         if (!adventurer) return;
         try {
             await deleteAdventurer(adventurer.id);
+            showToast("Adventurer deleted!");
             navigate("/adventurers");
         } catch (err) {
             setActionError(err as ApiError);

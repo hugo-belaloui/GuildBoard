@@ -1,6 +1,7 @@
 import { request } from "./httpClient.ts" 
 import type { Difficulty, Quest, QuestStatus, QuestRequest } from "../types/quest.ts"
 import type { Assignment } from "../types/assignment.ts";
+import { useToast } from "../components/ui/ToastProvider.tsx";
 
 // GET a list of quests, with optional status and difficulty 
 export async function getQuests(filters?: { status?: QuestStatus; difficulty?: Difficulty })
@@ -72,6 +73,8 @@ export async function assignAdventurer(questId: number, adventurerId: number) : 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({adventurerId: adventurerId}),
     };
+
+    
 
     return request<Assignment>(`/quests/${questId}/assignment`, options);
 }

@@ -1,10 +1,11 @@
-import { useEffect, useState, type ChangeEvent, type SubmitEvent } from "react"; 
+import { useEffect, useState, type ChangeEvent, type SubmitEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuest } from "../hooks/useQuest";
 import { createQuest, updateQuest } from "../services/questService";
 import { Button } from "../components/ui/Button";
 import { LoadSpinner } from "../components/ui/LoadSpinner";
 import { ErrorMessage } from "../components/ui/ErrorMessage";
+import { useToast } from "../components/ui/ToastProvider";
 import type { ApiError } from "../types/api";
 import type { Difficulty } from "../types/quest";
 
@@ -59,11 +60,12 @@ function validate(values: QuestFormValues): Partial<Record<keyof QuestFormValues
 
 export function QuestFormPage() {
     // grab the id from the url 
-    const { id } = useParams(); 
+    const { id } = useParams();
     // go back to previous page on form completion/cancel
-    const navigate = useNavigate(); 
-    // if id : quest edit || if no id : quest creation 
-    const isEditMode = id!== undefined; 
+    const navigate = useNavigate();
+    const { showToast } = useToast();
+    // if id : quest edit || if no id : quest creation
+    const isEditMode = id!== undefined;
 
     // fetch the quest if editing (id defined) ; skipped entirely if creating (undefined)
     const { quest, isLoading: isLoadingQuest } = useQuest(id ? Number(id) : undefined);
@@ -119,6 +121,7 @@ export function QuestFormPage() {
             const savedQuest = isEditMode
                 ? await updateQuest(Number(id), payload)
                 : await createQuest(payload);
+            showToast(isEditMode ? "Quest updated!" : "Quest created!");
             // go back to the QuestDetails page of the created/edited page
             navigate(`/quests/${savedQuest.id}`);
         } catch (err) {

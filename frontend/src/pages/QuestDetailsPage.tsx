@@ -7,6 +7,7 @@ import { StatusBadge } from "../components/quests/StatusBadge";
 import { Button } from "../components/ui/Button";
 import { LoadSpinner } from "../components/ui/LoadSpinner";
 import { ErrorMessage } from "../components/ui/ErrorMessage";
+import { useToast } from "../components/ui/ToastProvider";
 import type { ApiError } from "../types/api";
 
 export function QuestDetailsPage() {
@@ -14,6 +15,7 @@ export function QuestDetailsPage() {
     const { id } = useParams();
     // useNavigate : navigate from id, not from a clicked Link
     const navigate = useNavigate();
+    const { showToast } = useToast();
     const { quest, isLoading, error, refetch } = useQuest(Number(id));
     // shared by both delete and complete : only one action happens at a time
     const [actionError, setActionError] = useState<ApiError | null>(null);
@@ -22,6 +24,7 @@ export function QuestDetailsPage() {
         if (!quest) return;
         try {
             await deleteQuest(quest.id);
+            showToast("Quest deleted!");
             // redirect back to the list once deleted
             navigate("/quests");
         } catch (err) {
@@ -33,6 +36,7 @@ export function QuestDetailsPage() {
         if (!quest) return;
         try {
             await completeQuest(quest.id);
+            showToast("Quest completed!");
             refetch();
         } catch (err) {
             setActionError(err as ApiError);

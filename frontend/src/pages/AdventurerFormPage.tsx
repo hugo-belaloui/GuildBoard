@@ -5,6 +5,7 @@ import { createAdventurer, updateAdventurer } from "../services/adventurerServic
 import { Button } from "../components/ui/Button";
 import { LoadSpinner } from "../components/ui/LoadSpinner";
 import { ErrorMessage } from "../components/ui/ErrorMessage";
+import { useToast } from "../components/ui/ToastProvider";
 import type { ApiError } from "../types/api";
 import type { CharacterClass } from "../types/adventurer";
 
@@ -34,6 +35,7 @@ function validate(values: AdventurerFormValues): Partial<Record<keyof Adventurer
 export function AdventurerFormPage() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { showToast } = useToast();
     const isEditMode = id !== undefined;
 
     const { adventurer, isLoading: isLoadingAdventurer } = useAdventurer(id ? Number(id) : undefined);
@@ -73,6 +75,7 @@ export function AdventurerFormPage() {
             const saved = isEditMode
                 ? await updateAdventurer(Number(id), payload)
                 : await createAdventurer(payload);
+            showToast(isEditMode ? "Adventurer updated!" : "Adventurer created!");
             navigate(`/adventurers/${saved.id}`);
         } catch (err) {
             setSubmitError(err as ApiError);
