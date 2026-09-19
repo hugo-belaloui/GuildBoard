@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAdventurer } from "../hooks/useAdventurer";
 import { useAdventurerHistory } from "../hooks/useAdventurerHistory";
+import { useQuests } from "../hooks/useQuests";
 import { deleteAdventurer } from "../services/adventurerService";
 import { Button } from "../components/ui/Button";
 import { ProgressBar } from "../components/ui/ProgressBar";
@@ -18,6 +19,8 @@ export function AdventurerDetailsPage() {
     const { adventurer, isLoading, error } = useAdventurer(Number(id));
     // renamed on destructure : two hooks both return "isLoading"/"error", need distinct names to use both
     const { history, isLoading: isLoadingHistory, error: historyError } = useAdventurerHistory(Number(id));
+    // whole quest catalog already loaded once, reused here to resolve each entry's title from its questId
+    const { quests } = useQuests();
     const [actionError, setActionError] = useState<ApiError | null>(null);
 
     async function handleDelete() {
@@ -54,10 +57,12 @@ export function AdventurerDetailsPage() {
             )}
             {!isLoadingHistory && !historyError && history.length > 0 && (
                 <div className="flex flex-col gap-3">
-                    {history.map((entry) => (
+                    {history.map((entry) => {
+                        const quest = quests.find((q) => q.id === entry.questId);
+                        return (
                         <div key={entry.id}>
                             <Link to={`/quests/${entry.questId}`} className="font-semibold text-blue-600">
-                                Quest #{entry.questId}
+                                {quest?.title ?? `Quest #${entry.questId}`}
                             </Link>
                             {/* assignedAt/completedAt are strings (see types/assignment.ts) :
                                 new Date(string) parses them, .toLocaleDateString() formats for display */}
@@ -68,7 +73,8 @@ export function AdventurerDetailsPage() {
                                     : " · In progress"}
                             </p>
                         </div>
-                    ))}
+                        );
+                    })}
                 </div>
             )}
 
