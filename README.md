@@ -11,8 +11,8 @@ Guildboard lets a Guild Master:
 
 The team : 
 
-- **Hugo Belaloui** — referent on the front-end week.
-- **Nelson Grac-Aubert** — referent on the back-end week.
+- [**Hugo Belaloui**](https://github.com/hugo-belaloui) — referent on the front-end week.
+- [**Nelson Grac-Aubert**](https://github.com/nelson-grac-aubert) — referent on the back-end week.
 
 ## 2. Prerequisites and setup
 
