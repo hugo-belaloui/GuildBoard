@@ -7,11 +7,13 @@ import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
 import { LoadSpinner } from "../ui/LoadSpinner";
 import { ErrorMessage } from "../ui/ErrorMessage";
+import { useToast } from "../ui/ToastProvider";
 import type { ApiError } from "../../types/api";
 
 export function AssignAdventurer() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { showToast } = useToast();
     const questId = Number(id);
 
     const { quest, isLoading: isLoadingQuest } = useQuest(questId);
@@ -30,6 +32,7 @@ export function AssignAdventurer() {
         if (selectedId === null) return;
         try {
             await assignAdventurer(questId, selectedId);
+            showToast("Adventurer assigned!");
             navigate(`/quests/${questId}`);
         } catch (err) {
             setSubmitError(err as ApiError);

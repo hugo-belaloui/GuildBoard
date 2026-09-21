@@ -99,8 +99,15 @@ public class QuestController { // Defines the main class for handling quest-rela
         );
     }
 
+    // Maps HTTP GET requests sent to /api/quests/{id}/assignment
+    @GetMapping("/{id}/assignment")
+    // Returns who the quest is/was assigned to, and when it was assigned/completed
+    public AssignmentResponseDTO getQuestAssignment(@PathVariable Long id) {
+        return assignmentService.getByQuestId(id);
+    }
+
     // Maps HTTP POST requests sent to /api/quests/{id}/completion
-    @PostMapping("/{id}/completion") 
+    @PostMapping("/{id}/completion")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     // Extracts the quest ID from the URL to know which quest has been completed
     public void completeQuest(@PathVariable Long id) { 
