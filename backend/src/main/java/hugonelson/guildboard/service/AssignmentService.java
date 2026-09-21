@@ -1,0 +1,166 @@
+package hugonelson.guildboard.service;
+
+import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.ArrayList;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import hugonelson.guildboard.dto.AssignmentResponseDTO;
+
+import hugonelson.guildboard.repository.AdventurerRepository;
+import hugonelson.guildboard.repository.AssignmentRepository;
+import hugonelson.guildboard.repository.QuestRepository;
+import hugonelson.guildboard.entity.Adventurer;
+import hugonelson.guildboard.entity.Assignment;
+import hugonelson.guildboard.entity.Quest;
+import hugonelson.guildboard.exceptions.ApiException;
+
+@Service
+public class AssignmentService {
+
+    private final AssignmentRepository assignmentRepository;
+    private final AdventurerRepository adventurerRepository;
+    private final QuestRepository questRepository;
+
+    public AssignmentService(AssignmentRepository assignmentRepository, AdventurerRepository adventurerRepository, QuestRepository questRepository) {
+        this.assignmentRepository = assignmentRepository;
+        this.adventurerRepository = adventurerRepository;
+        this.questRepository = questRepository;
+    }
+
+    // assigns an adventurer to a quest
+    public Assignment assign(Long questId, Long adventurerId) {
+
+        // throw ApiException to be caught by the @RestControllerAdvice to ensure entities exists
+
+        // Optional : a java type that can also be null, prevent crashes
+        // Check if not null with .isPresent(), if so grab it with .get()
+        Optional<Adventurer> maybeAdventurer = adventurerRepository.findById(adventurerId);
+        Adventurer adventurer;
+        if (maybeAdventurer.isPresent()) {
+            adventurer = maybeAdventurer.get();
+        } 
+        else {
+            throw new ApiException(HttpStatus.NOT_FOUND, "ADVENTURER_NOT_FOUND", "Cannot find the adventurer."); // 404 
+        }
+
+        Optional<Quest> maybeQuest = questRepository.findById(questId);
+        Quest quest;
+        if (maybeQuest.isPresent()) {
+            quest = maybeQuest.get();
+        } 
+        else {
+            throw new ApiException(HttpStatus.NOT_FOUND, "QUEST_NOT_FOUND", "Cannot find the quest."); // 404 
+        }
+
+        // throw ApiException to be caught by the @RestControllerAdvice to enforce RG1 (level requirement)
+        if (adventurer.getLevel() < quest.getRequiredLevel()) {
+            throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY, "LEVEL_TOO_LOW", // 422 
+            adventurer.getName() + " (level " + adventurer.getLevel() + ") cannot accept a quest of required level " + quest.getRequiredLevel() + ".");
+        }
+
+        // RG2 (quest already ongoing or completed)
+        if (quest.getStatus() == Quest.QuestStatus.ON_GOING || quest.getStatus() == Quest.QuestStatus.COMPLETED) {
+            throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY, "QUEST_NOT_AVAILABLE", // 422
+            "This quest is not available for assignment.");
+        }
+
+        // RG2 (adventurer already has an ongoing quest and cannot be assigned)
+        if (assignmentRepository.existsByAdventurer_IdAndQuest_Status(adventurerId, Quest.QuestStatus.ON_GOING)) {
+            throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY, "ADVENTURER_ALREADY_BUSY", // 422
+            "This adventurer already has an ongoing quest.");
+        }
+
+        // After all checks succeed
+        quest.setStatus(Quest.QuestStatus.ON_GOING);
+        questRepository.save(quest);
+
+        Assignment assignment = new Assignment(adventurer, quest, LocalDateTime.now()); 
+        assignmentRepository.save(assignment);
+
+        return assignment;
+    }
+
+    // complete a quest, reward gold and xp, run the RG3 level loop 
+    public void complete(Long questId) {
+        
+        Optional<Assignment> maybeAssignment = assignmentRepository.findByQuest_Id(questId);;
+        Assignment assignment;
+        if (maybeAssignment.isPresent()) {
+            assignment = maybeAssignment.get();
+        } 
+        else {
+            throw new ApiException(HttpStatus.NOT_FOUND, "ASSIGNMENT_NOT_FOUND", "Cannot find the assignment."); // 404 
+        }
+
+        Adventurer adventurer = assignment.getAdventurer();
+        Quest quest = assignment.getQuest();
+        
+        if (quest.getStatus() != Quest.QuestStatus.ON_GOING) {
+            throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY, "QUEST_NOT_ON_GOING", "Quest must be ongoing to be completed."); //422
+        }
+
+        // award Gold and Xp
+        adventurer.setGold(adventurer.getGold() + quest.getGoldReward()); 
+        adventurer.setXp(adventurer.getXp() + quest.getXpReward());
+
+        // mark quest as complete
+        quest.setStatus(Quest.QuestStatus.COMPLETED);
+
+        // level up loop 
+        while (adventurer.getXp() >= adventurer.getLevel() * 100) {
+            adventurer.setXp(adventurer.getXp() - adventurer.getLevel() * 100);
+            adventurer.setLevel(adventurer.getLevel() + 1); 
+        }
+
+        // timestamp assignment.completedAt
+        assignment.complete(LocalDateTime.now()); 
+
+        // make changes persistent
+        assignmentRepository.save(assignment);
+        adventurerRepository.save(adventurer);
+        questRepository.save(quest);
+    }
+
+    // retrieve the current/latest assignment of a quest (used to show who it's assigned to, and when)
+    public AssignmentResponseDTO getByQuestId(Long questId) {
+        Optional<Assignment> maybeAssignment = assignmentRepository.findByQuest_Id(questId);
+        if (maybeAssignment.isEmpty()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "ASSIGNMENT_NOT_FOUND", "This quest has no assignment.");
+        }
+        Assignment assignment = maybeAssignment.get();
+        return new AssignmentResponseDTO(
+            assignment.getId(),
+            assignment.getAdventurer().getId(),
+            assignment.getQuest().getId(),
+            assignment.getAssignedAt(),
+            assignment.getCompletedAt()
+        );
+    }
+
+    //retrieve all assignment for an adventurer
+    public List<AssignmentResponseDTO> getAdventurerHistory (Long adventurerId) {
+        Optional<Adventurer> maybeAdventurer = adventurerRepository.findById(adventurerId);
+        
+        if (maybeAdventurer.isEmpty()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "ADVENTURER_NOT_FOUND", "Can't find the adventurer");
+        }
+        
+        List<Assignment> assignments = assignmentRepository.findByAdventurerId(adventurerId);
+        List<AssignmentResponseDTO> dtos = new ArrayList<>();
+        
+        for (Assignment assignment : assignments) {
+            dtos.add(new AssignmentResponseDTO(
+                assignment.getId(),
+                assignment.getAdventurer().getId(),
+                assignment.getQuest().getId(),
+                assignment.getAssignedAt(),
+                assignment.getCompletedAt()
+            ));
+        }
+        return dtos;
+    }
+}

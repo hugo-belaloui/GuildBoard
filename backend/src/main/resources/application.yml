@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: guildboard
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa: 
+    hibernate:
+      ddl-auto: update
+
+# flags to seed the db with data.sql script
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+  profiles:
+    active: dev
+
+management:
+    endpoints:
+      web:
+        exposure:
+          # counters, latency, all necessary infos to monitor the app 
+          include: health,info,metrics
+    endpoint:
+      health:
+        # todo : change back to "when-authorized" before production
+        show-details: always
